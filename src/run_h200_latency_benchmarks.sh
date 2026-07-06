@@ -1,19 +1,11 @@
 #!/usr/bin/env bash
-#SBATCH -J soma_vlm_latency
-#SBATCH -p gpu_h200
-#SBATCH --gpus=1
-#SBATCH --cpus-per-task=12
-#SBATCH --mem=252G
-#SBATCH -o outputs/latency_benchmarks/slurm-%j.out
-#SBATCH -e outputs/latency_benchmarks/slurm-%j.err
-
 set -euo pipefail
 
 # H200 VLM latency benchmark runner for SOMA.
 #
 # Usage:
 #   cd /mnt/disk1/shared_data/lzy/SOMA-local/src
-#   sbatch run_h200_latency_benchmarks.sh
+#   sbatch -p gpu_h200 --gpus=1 ./run_h200_latency_benchmarks.sh
 #
 # Optional environment overrides:
 #   IMG=/path/to/image.jpg

@@ -51,6 +51,7 @@ MCP_WARMUP="${MCP_WARMUP:-25}"
 MCP_RUNS="${MCP_RUNS:-200}"
 VLM_WARMUP="${VLM_WARMUP:-15}"
 VLM_RUNS="${VLM_RUNS:-100}"
+VLM_SCENARIOS="${VLM_SCENARIOS:-generic visual_overlay remove_distractor visual_overlay_detect remove_distractor_detect prompt_refiner chainstep}"
 
 OVERLAY_PROMPT="${OVERLAY_PROMPT:-central black bowl}"
 REMOVE_PROMPT="${REMOVE_PROMPT:-black bowl}"
@@ -85,7 +86,7 @@ fi
 
 if [[ "${RUN_VLM}" == "1" ]]; then
   echo "[2/4] VLM orchestration latency"
-  for scenario in generic prompt_refiner chainstep; do
+  for scenario in ${VLM_SCENARIOS}; do
     echo "  - scenario=${scenario}"
     python benchmark_vlm_tool_latency.py \
       --image "${IMG}" \

@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
+#SBATCH -J soma_vlm_latency
+#SBATCH -p gpu_h200
+#SBATCH --gpus=1
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=252G
+#SBATCH -o outputs/latency_benchmarks/slurm-%j.out
+#SBATCH -e outputs/latency_benchmarks/slurm-%j.err
+
 set -euo pipefail
 
-# H200 latency benchmark runner for SOMA.
+# H200 VLM latency benchmark runner for SOMA.
 #
 # Usage:
 #   cd /mnt/disk1/shared_data/lzy/SOMA-local/src
-#   chmod +x run_h200_latency_benchmarks.sh
-#   SOMA_VLM_API_KEY=... ./run_h200_latency_benchmarks.sh
+#   sbatch run_h200_latency_benchmarks.sh
 #
 # Optional environment overrides:
 #   IMG=/path/to/image.jpg
@@ -16,13 +23,20 @@ set -euo pipefail
 #   SAM3_URL=http://127.0.0.1:5001
 #   DEVICE=cuda
 #   RUN_RAG=1 RUN_VLM=1 RUN_SAM3_CORE=1 RUN_MCP=1
+#   SOMA_VLM_BASE_URL=http://127.0.0.1:8000/v1
+#   SOMA_VLM_API_KEY=EMPTY
+#   SOMA_VLM_MODEL_ID=qwen3-vl-32b-instruct
 #
 # Notes:
 #   - RUN_MCP requires sam3_service.py already running at SAM3_URL.
-#   - VLM benchmarks use soma_vlm.py's OpenAI-compatible API backend. To test a
-#     local H200 VLM server, set SOMA_VLM_BASE_URL to that server, e.g.
-#     http://127.0.0.1:8000/v1, SOMA_VLM_API_KEY=EMPTY, and
-#     SOMA_VLM_MODEL_ID=qwen3-vl-32b-instruct.
+#   - Default H200 mode only runs VLM benchmarks. SAM3/RAG/MCP are disabled.
+
+module load miniforge3/24.11 || true
+source activate "${CONDA_ENV:-pytorch}"
+
+export SOMA_VLM_BASE_URL="${SOMA_VLM_BASE_URL:-http://127.0.0.1:8000/v1}"
+export SOMA_VLM_API_KEY="${SOMA_VLM_API_KEY:-EMPTY}"
+export SOMA_VLM_MODEL_ID="${SOMA_VLM_MODEL_ID:-qwen3-vl-32b-instruct}"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${ROOT_DIR}"
@@ -49,16 +63,19 @@ VLM_RUNS="${VLM_RUNS:-100}"
 OVERLAY_PROMPT="${OVERLAY_PROMPT:-central black bowl}"
 REMOVE_PROMPT="${REMOVE_PROMPT:-black bowl}"
 
-RUN_RAG="${RUN_RAG:-1}"
+RUN_RAG="${RUN_RAG:-0}"
 RUN_VLM="${RUN_VLM:-1}"
-RUN_SAM3_CORE="${RUN_SAM3_CORE:-1}"
-RUN_MCP="${RUN_MCP:-1}"
+RUN_SAM3_CORE="${RUN_SAM3_CORE:-0}"
+RUN_MCP="${RUN_MCP:-0}"
 
 echo "[SOMA latency] root=${ROOT_DIR}"
 echo "[SOMA latency] out=${OUT_DIR}"
 echo "[SOMA latency] image=${IMG}"
 echo "[SOMA latency] memory=${MEMORY_DIR}"
 echo "[SOMA latency] sam3_url=${SAM3_URL}"
+echo "[SOMA latency] vlm_base_url=${SOMA_VLM_BASE_URL}"
+echo "[SOMA latency] vlm_model=${SOMA_VLM_MODEL_ID}"
+echo "[SOMA latency] run_flags=rag:${RUN_RAG} vlm:${RUN_VLM} sam3_core:${RUN_SAM3_CORE} mcp:${RUN_MCP}"
 
 if [[ "${RUN_RAG}" == "1" ]]; then
   echo "[1/4] RAG retrieval latency"

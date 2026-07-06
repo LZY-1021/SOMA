@@ -24,7 +24,7 @@ set -euo pipefail
 #   - Default H200 mode only runs VLM benchmarks. SAM3/RAG/MCP are disabled.
 
 module load miniforge3/24.11 || true
-source activate "${CONDA_ENV:-pytorch}"
+source activate "${CONDA_ENV:-qwen3vl}"
 
 export SOMA_VLM_BASE_URL="${SOMA_VLM_BASE_URL:-http://127.0.0.1:8000/v1}"
 export SOMA_VLM_API_KEY="${SOMA_VLM_API_KEY:-EMPTY}"

@@ -23,8 +23,9 @@ set -euo pipefail
 #   - RUN_MCP requires sam3_service.py already running at SAM3_URL.
 #   - Default H200 mode only runs VLM benchmarks. SAM3/RAG/MCP are disabled.
 
-module load miniforge3/24.11 || true
+module load miniforge3/25.11.0-1 cuda/12.8
 source activate "${CONDA_ENV:-qwen3vl}"
+export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
 
 export SOMA_VLM_BASE_URL="${SOMA_VLM_BASE_URL:-http://127.0.0.1:8000/v1}"
 export SOMA_VLM_API_KEY="${SOMA_VLM_API_KEY:-EMPTY}"

@@ -1,0 +1,45 @@
+{
+  "benchmark": "VLM orchestration: chainstep",
+  "scenario": "chainstep",
+  "image": "/mnt/disk1/shared_data/lzy/SOMA-local/src/experiment_step/remove-distractor/data/original.jpg",
+  "task": "Pick up the cream cheese and place it in the basket, then pick up the milk and place it in the basket, then pick up the chocolate pudding and place it in the basket.",
+  "rag_context": "Past failures indicate long-horizon compounding errors. Prefer task_decompose into short subtasks with control-flow reset.",
+  "warmup_runs": 15,
+  "measured_runs": 100,
+  "model_id": "qwen3-vl-32b-instruct",
+  "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "latency": {
+    "mean_s": 13.01312664385885,
+    "median_s": 9.671485288999975,
+    "p95_s": 29.132186830975115,
+    "p99_s": 53.10025052400306,
+    "min_s": 7.901346208062023,
+    "max_s": 55.892859655898064,
+    "mean_ms": 13013.12664385885,
+    "median_ms": 9671.485288999975,
+    "p95_ms": 29132.186830975115,
+    "p99_ms": 53100.25052400306,
+    "min_ms": 7901.346208062023,
+    "max_ms": 55892.859655898064
+  },
+  "last_plan": {
+    "reasoning": "The image shows a robotic arm above a wooden surface with multiple small bowls and one distinct circular object with a red rim and white center (likely the cream cheese). The task involves picking up three specific items (cream cheese, milk, chocolate pudding) and placing each in a basket. However, the current scene does not show any labeled or visually distinguishable containers for 'milk' or 'chocolate pudding'\u2014only several identical-looking bowls. This ambiguity creates a high risk of misidentification and compounding errors, especially given the hint about long-horizon compounding failures.\n\nTo mitigate this, I will decompose the task into short subtasks, each focusing on one item. Since the cream cheese is visually distinct (red-rimmed container), it can be identified first. For the other two items, without clear visual cues, we must rely on contextual understanding or prior knowledge that they are among the bowls. To prevent confusion, I will use 'task_decompose' to break the task into manageable steps with control-flow reset after each placement.\n\nAdditionally, since the bowls are indistinguishable, I will use 'visual_overlay' to highlight the cream cheese to ensure accurate identification and pickup. No distractors need removal as there are no clearly misleading objects. The background is simple and non-noisy, so no replacement is needed.",
+    "refined_task": "Pick up the highlighted cream cheese and place it in the basket. Then, pick up the milk and place it in the basket. Finally, pick up the chocolate pudding and place it in the basket.",
+    "tool_chain": [
+      "visual_overlay",
+      "task_decompose"
+    ],
+    "params": {
+      "visual_overlay": {
+        "target_object": "the cream cheese in the red-rimmed container"
+      },
+      "task_decompose": {
+        "subtasks": [
+          "Pick up the cream cheese and place it in the basket",
+          "Pick up the milk and place it in the basket",
+          "Pick up the chocolate pudding and place it in the basket"
+        ]
+      }
+    }
+  }
+}

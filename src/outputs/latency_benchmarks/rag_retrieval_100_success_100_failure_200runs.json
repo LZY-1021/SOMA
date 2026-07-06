@@ -1,0 +1,22 @@
+{
+  "benchmark": "RAG retrieval 100 success / 100 failure",
+  "memory_dir": "/mnt/disk1/shared_data/lzy/SOMA-local/src/outputs/experience_db_100bench",
+  "warmup_runs": 100,
+  "measured_runs": 300,
+  "mean_s": 0.004933029846288264,
+  "median_s": 0.00492303550709039,
+  "p95_s": 0.005010090069845319,
+  "p99_s": 0.005044851917773485,
+  "min_s": 0.004855083068832755,
+  "max_s": 0.0056080271024256945,
+  "mean_ms": 4.933029846288264,
+  "median_ms": 4.92303550709039,
+  "p95_ms": 5.010090069845319,
+  "p99_ms": 5.044851917773485,
+  "min_ms": 4.855083068832755,
+  "max_ms": 5.6080271024256945,
+  "last_ctx_sizes": {
+    "success": 1,
+    "failure": 2
+  }
+}

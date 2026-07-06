@@ -1,0 +1,35 @@
+{
+  "benchmark": "VLM orchestration: prompt_refiner",
+  "scenario": "prompt_refiner",
+  "image": "/mnt/disk1/shared_data/lzy/SOMA-local/src/experiment_step/remove-distractor/data/original.jpg",
+  "task": "Umm... can you grab that dark round thing in the middle, you know, the bowl, and put it on the plate?",
+  "rag_context": "Past failures indicate linguistic ambiguity and noisy informal instructions. Prefer prompt refinement when visual input is clear.",
+  "warmup_runs": 15,
+  "measured_runs": 100,
+  "model_id": "qwen3-vl-32b-instruct",
+  "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "latency": {
+    "mean_s": 6.513278422043658,
+    "median_s": 4.238843239028938,
+    "p95_s": 21.080008858814836,
+    "p99_s": 28.46071981987916,
+    "min_s": 3.63601431902498,
+    "max_s": 34.406012785155326,
+    "mean_ms": 6513.278422043659,
+    "median_ms": 4238.843239028938,
+    "p95_ms": 21080.008858814836,
+    "p99_ms": 28460.71981987916,
+    "min_ms": 3636.01431902498,
+    "max_ms": 34406.012785155326
+  },
+  "last_plan": {
+    "reasoning": "The task instruction is ambiguous: 'dark round thing in the middle, you know, the bowl' is vague and could refer to any of the five similar-looking bowls. The image shows five identical textured bowls arranged in a cluster, with one plate on the left. Since the visual input is clear but the language is noisy, I will refine the task to specify exactly which bowl to pick up. The most logical choice is the central bowl (the one directly in the middle of the group), as it matches the user\u2019s description best. I will use 'encore' to refine the task without modifying the image, since the scene is already uncluttered and no distractors are present.",
+    "refined_task": "Pick up the central dark textured bowl and place it on the plate.",
+    "tool_chain": [
+      "encore"
+    ],
+    "params": {
+      "refined_task": "Pick up the central dark textured bowl and place it on the plate."
+    }
+  }
+}

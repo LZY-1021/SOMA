@@ -1,0 +1,28 @@
+{
+  "benchmark": "MCP visual tool end-to-end: remove",
+  "image": "/mnt/disk1/shared_data/lzy/SOMA-local/src/experiment_step/remove-distractor/data/original.jpg",
+  "prompt": "black bowl",
+  "operation": "remove",
+  "sam3_url": "http://127.0.0.1:5001",
+  "warmup_runs": 25,
+  "measured_runs": 200,
+  "last_output_shape": [
+    256,
+    256,
+    3
+  ],
+  "latency": {
+    "mean_s": 1.3584435422962997,
+    "median_s": 0.9098095339722931,
+    "p95_s": 2.6617690809071064,
+    "p99_s": 13.053232907084748,
+    "min_s": 0.7833543219603598,
+    "max_s": 19.41342701506801,
+    "mean_ms": 1358.4435422962997,
+    "median_ms": 909.8095339722931,
+    "p95_ms": 2661.7690809071064,
+    "p99_ms": 13053.232907084748,
+    "min_ms": 783.3543219603598,
+    "max_ms": 19413.42701506801
+  }
+}

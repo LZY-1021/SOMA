@@ -15,9 +15,8 @@ set -euo pipefail
 #   SAM3_URL=http://127.0.0.1:5001
 #   DEVICE=cuda
 #   RUN_RAG=1 RUN_VLM=1 RUN_SAM3_CORE=1 RUN_MCP=1
-#   SOMA_VLM_BASE_URL=http://127.0.0.1:8000/v1
-#   SOMA_VLM_API_KEY=EMPTY
-#   SOMA_VLM_MODEL_ID=qwen3-vl-32b-instruct
+#   SOMA_VLM_BACKEND=hf
+#   SOMA_VLM_MODEL_ID=Qwen/Qwen3-VL-32B-Instruct
 #
 # Notes:
 #   - RUN_MCP requires sam3_service.py already running at SAM3_URL.
@@ -34,9 +33,10 @@ source "${CONDA_BASE}/etc/profile.d/conda.sh"
 conda activate "${CONDA_ENV}"
 export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
 
+export SOMA_VLM_BACKEND="${SOMA_VLM_BACKEND:-hf}"
 export SOMA_VLM_BASE_URL="${SOMA_VLM_BASE_URL:-http://127.0.0.1:8000/v1}"
 export SOMA_VLM_API_KEY="${SOMA_VLM_API_KEY:-EMPTY}"
-export SOMA_VLM_MODEL_ID="${SOMA_VLM_MODEL_ID:-qwen3-vl-32b-instruct}"
+export SOMA_VLM_MODEL_ID="${SOMA_VLM_MODEL_ID:-Qwen/Qwen3-VL-32B-Instruct}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="${SOMA_ROOT_DIR:-${SLURM_SUBMIT_DIR:-${SCRIPT_DIR}}}"
@@ -58,8 +58,8 @@ SAM3_WARMUP="${SAM3_WARMUP:-25}"
 SAM3_RUNS="${SAM3_RUNS:-200}"
 MCP_WARMUP="${MCP_WARMUP:-25}"
 MCP_RUNS="${MCP_RUNS:-200}"
-VLM_WARMUP="${VLM_WARMUP:-15}"
-VLM_RUNS="${VLM_RUNS:-100}"
+VLM_WARMUP="${VLM_WARMUP:-3}"
+VLM_RUNS="${VLM_RUNS:-20}"
 VLM_SCENARIOS="${VLM_SCENARIOS:-generic visual_overlay_detect remove_distractor_detect prompt_refiner chainstep}"
 
 OVERLAY_PROMPT="${OVERLAY_PROMPT:-central black bowl}"
@@ -75,6 +75,7 @@ echo "[SOMA latency] out=${OUT_DIR}"
 echo "[SOMA latency] image=${IMG}"
 echo "[SOMA latency] memory=${MEMORY_DIR}"
 echo "[SOMA latency] sam3_url=${SAM3_URL}"
+echo "[SOMA latency] vlm_backend=${SOMA_VLM_BACKEND}"
 echo "[SOMA latency] vlm_base_url=${SOMA_VLM_BASE_URL}"
 echo "[SOMA latency] vlm_model=${SOMA_VLM_MODEL_ID}"
 echo "[SOMA latency] run_flags=rag:${RUN_RAG} vlm:${RUN_VLM} sam3_core:${RUN_SAM3_CORE} mcp:${RUN_MCP}"

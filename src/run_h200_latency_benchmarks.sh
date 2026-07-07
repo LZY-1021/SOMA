@@ -38,7 +38,8 @@ export SOMA_VLM_BASE_URL="${SOMA_VLM_BASE_URL:-http://127.0.0.1:8000/v1}"
 export SOMA_VLM_API_KEY="${SOMA_VLM_API_KEY:-EMPTY}"
 export SOMA_VLM_MODEL_ID="${SOMA_VLM_MODEL_ID:-qwen3-vl-32b-instruct}"
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="${SOMA_ROOT_DIR:-${SLURM_SUBMIT_DIR:-${SCRIPT_DIR}}}"
 cd "${ROOT_DIR}"
 
 OUT_DIR="${OUT_DIR:-${ROOT_DIR}/outputs/latency_benchmarks}"

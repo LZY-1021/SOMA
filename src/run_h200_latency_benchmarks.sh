@@ -24,7 +24,14 @@ set -euo pipefail
 #   - Default H200 mode only runs VLM benchmarks. SAM3/RAG/MCP are disabled.
 
 module load miniforge3/25.11.0-1 cuda/12.8
-source activate "${CONDA_ENV:-qwen3vl}"
+CONDA_ENV="${CONDA_ENV:-qwen3vl}"
+if ! command -v conda >/dev/null 2>&1; then
+  echo "[ERROR] conda command not found after module load." >&2
+  exit 1
+fi
+CONDA_BASE="$(conda info --base)"
+source "${CONDA_BASE}/etc/profile.d/conda.sh"
+conda activate "${CONDA_ENV}"
 export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
 
 export SOMA_VLM_BASE_URL="${SOMA_VLM_BASE_URL:-http://127.0.0.1:8000/v1}"
